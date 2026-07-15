@@ -52,7 +52,6 @@ public class AttributeReflectionTests
     [Fact]
     public void ReflectionHelper_PrintTypeInfo_OutputsCorrectData()
     {
-        // Временно перехватываем консольный вывод
         using var sw = new StringWriter();
         var originalOut = Console.Out;
         Console.SetOut(sw);
@@ -62,7 +61,6 @@ public class AttributeReflectionTests
             ReflectionHelper.PrintTypeInfo(typeof(SampleClass));
             var output = sw.ToString();
 
-            // Проверяем, что в консоль вывелось то, что нужно
             Assert.Contains("SampleClass - Пример класса", output);
             Assert.Contains("Version: 1.0", output);
             Assert.Contains("TestMethod - Тестовый метод", output);
@@ -70,7 +68,6 @@ public class AttributeReflectionTests
         }
         finally
         {
-            // Обязательно возвращаем стандартный вывод на место, чтобы не ломать другие тесты
             Console.SetOut(originalOut);
         }
     }
