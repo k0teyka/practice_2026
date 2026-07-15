@@ -1,24 +1,8 @@
 <Solution>
-  <Folder Name="/task08/">
-    <Project Path="task08/CommandLib/CommandLib.csproj" />
-    <Project Path="task08/CommandRunner/CommandRunner.csproj" />
-    <Project Path="task08/FileSystemCommands/FileSystemCommands.csproj" />
-  </Folder>
   <Folder Name="/task09/">
     <Project Path="task09/MetadataRunner/MetadataRunner.csproj" />
   </Folder>
-  <Project Path="task01/task01.csproj" />
-  <Project Path="task01tests/task01tests.csproj" />
-  <Project Path="task02/task02.csproj" />
-  <Project Path="task02tests/task02tests.csproj" />
-  <Project Path="task03/task03.csproj" />
-  <Project Path="task03tests/task03tests.csproj" />
-  <Project Path="task04/task04.csproj" />
-  <Project Path="task04tests/task04tests.csproj" />
-  <Project Path="task05/task05.csproj" />
-  <Project Path="task05tests/task05tests.csproj" />
   <Project Path="task07/task07.csproj" />
   <Project Path="task07tests/task07tests.csproj" />
-  <Project Path="task08tests/task08tests.csproj" />
   <Project Path="task09tests/task09tests.csproj" />
 </Solution>
