@@ -4,6 +4,9 @@
     <Project Path="task08/CommandRunner/CommandRunner.csproj" />
     <Project Path="task08/FileSystemCommands/FileSystemCommands.csproj" />
   </Folder>
+  <Folder Name="/task09/">
+    <Project Path="task09/MetadataRunner/MetadataRunner.csproj" />
+  </Folder>
   <Project Path="task01/task01.csproj" />
   <Project Path="task01tests/task01tests.csproj" />
   <Project Path="task02/task02.csproj" />
@@ -17,4 +20,5 @@
   <Project Path="task07/task07.csproj" />
   <Project Path="task07tests/task07tests.csproj" />
   <Project Path="task08tests/task08tests.csproj" />
+  <Project Path="task09tests/task09tests.csproj" />
 </Solution>
