@@ -20,10 +20,10 @@ jobs:
         dotnet-version: 10.0.x
 
     - name: Restore dependencies
-      run: dotnet restore practice2026.slnx /p:ContinueOnError=WarnAndContinue || true
+      run: dotnet restore practice2026.slnx
 
     - name: Build
-      run: dotnet build practice2026.slnx --no-restore /p:ContinueOnError=WarnAndContinue
+      run: dotnet build practice2026.slnx --no-restore
 
     - name: Test
-      run: dotnet test task09tests/task09tests.csproj --no-build --verbosity normal
+      run: dotnet test practice2026.slnx --no-build --verbosity normal --filter "FullyQualifiedName~tests"
