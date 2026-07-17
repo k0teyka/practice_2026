@@ -57,4 +57,18 @@ public class DefiniteIntegral
         barrier.SignalAndWait();
         return BitConverter.Int64BitsToDouble(Volatile.Read(ref _totalSumBits));
     }
+    
+    public static double SolveSingleThread(double a, double b, Func<double, double> function, double step)
+    {
+        int totalSteps = (int)Math.Round((b - a) / step);
+        double sum = 0.0;
+
+        for (int j = 0; j < totalSteps; j++)
+        {
+            double x1 = a + j * step;
+            double x2 = x1 + step;
+            sum += (function(x1) + function(x2)) / 2.0 * step;
+        }
+        return sum;
+    }
 }
