@@ -8,21 +8,23 @@ on:
 
 jobs:
   build:
-  
+
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 10.0.x
+
     - name: Restore dependencies
-      run: dotnet restore **/*tests.csproj
+
+      run: dotnet restore practice2026.slnx
 
     - name: Build
-      run: dotnet build **/*tests.csproj --no-restore
+      run: dotnet build practice2026.slnx --no-restore
 
     - name: Test
-      run: dotnet test **/*tests.csproj --no-build --verbosity normal
-      
+      run: dotnet test practice2026.slnx --no-build --verbosity normal --filter "FullyQualifiedName~tests"
