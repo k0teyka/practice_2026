@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/task08/">
+    <Project Path="task08/CommandLib/CommandLib.csproj" />
+    <Project Path="task08/CommandRunner/CommandRunner.csproj" />
+    <Project Path="task08/FileSystemCommands/FileSystemCommands.csproj" />
+  </Folder>
+  <Project Path="task08tests/task08tests.csproj" />
+</Solution>
