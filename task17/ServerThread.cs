@@ -10,6 +10,7 @@ public enum ServerState
 public class ServerThread
 {
     private readonly Queue<ICommand> _queue = new();
+    private readonly IScheduler? _scheduler;
     private Thread? _thread;
     private ServerState _state = ServerState.Running;
     private readonly Action<Exception, ICommand> _exceptionHandler;
@@ -17,9 +18,17 @@ public class ServerThread
     public bool IsCurrentThread => Thread.CurrentThread == _thread;
     public bool IsAlive => _thread?.IsAlive ?? false;
 
+    // Конструктор по умолчанию без планировщика
     public ServerThread(Action<Exception, ICommand>? errorHandler = null)
     {
         _exceptionHandler = errorHandler ?? ((_, _) => { });
+    }
+
+    // Конструктор со встроенным планировщиком задач
+    public ServerThread(IScheduler scheduler, Action<Exception, ICommand>? errorHandler = null) 
+        : this(errorHandler)
+    {
+        _scheduler = scheduler;
     }
 
     public void Start()
@@ -48,22 +57,33 @@ public class ServerThread
         {
             ICommand? command = null;
 
-            lock (_queue)
+            // Если планировщик содержит задачи, берем сначала их (неблокирующий режим)
+            if (_scheduler != null && _scheduler.HasCommand())
             {
-                while (_queue.Count == 0 && _state == ServerState.Running)
+                command = _scheduler.Select();
+            }
+            else
+            {
+                lock (_queue)
                 {
-                    Monitor.Wait(_queue);
-                }
+                    while (_queue.Count == 0 && _state == ServerState.Running)
+                    {
+                        // Если в планировщике внезапно появилась задача, не спим
+                        if (_scheduler != null && _scheduler.HasCommand()) break;
 
-                if (_state == ServerState.StoppingHard)
-                    break;
+                        Monitor.Wait(_queue);
+                    }
 
-                if (_state == ServerState.StoppingSoft && _queue.Count == 0)
-                    break;
+                    if (_state == ServerState.StoppingHard)
+                        break;
 
-                if (_queue.Count > 0)
-                {
-                    command = _queue.Dequeue();
+                    if (_state == ServerState.StoppingSoft && _queue.Count == 0)
+                        break;
+
+                    if (_queue.Count > 0)
+                    {
+                        command = _queue.Dequeue();
+                    }
                 }
             }
 
@@ -72,6 +92,12 @@ public class ServerThread
                 try
                 {
                     command.Execute();
+
+                    // Если это длительная задача и она не завершена, возвращаем её в планировщик
+                    if (_scheduler != null && command is ILongCommand longCommand && !longCommand.IsCompleted)
+                    {
+                        _scheduler.Add(command);
+                    }
                 }
                 catch (Exception ex)
                 {
